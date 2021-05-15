@@ -151,7 +151,7 @@ let curried = curry(fun, 1, 1);
 std::cout << curried(1) << std::endl; // 3
 ```
 The invocation of the curry method requires an unique instantiation of a template function each time, which
-in turn involves a macro ```curry``` to provide an empty lambda to the curry method as a dummy.(C++ standard guarantees
+in turn involves a macro ```curry``` to provide an empty lambda to the curry method as a dummy. (C++ standard guarantees
 all lambdas are unique types and thus lead to unique instantiations of the template function.) 
 ```c++
 #define curry(...) libletlib::detail::curry([](){}, __VA_ARGS__)
@@ -415,8 +415,8 @@ type(Foo) contains(
 	member(msg) = "Hello"	
 	)
 
-// PrintAll is a subroutine (non-returning function) that simply prints all the arguments given.	
-let PrintAll = []subroutine(std::cout << args << std::endl;);
+// PrintFirst is a subroutine (non-returning function) that simply prints the first argument given.	
+let PrintFirst = []subroutine(std::cout << st << std::endl;);
 
 int main(void) {
     // Create a pair of Foo instances.
