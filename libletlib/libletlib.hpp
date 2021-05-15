@@ -31,15 +31,6 @@
 // $$       |$$ |$$    $$/ $$       |$$       |  $$  $$/ $$       |$$ |$$    $$/
 // $$$$$$$$/ $$/ $$$$$$$/  $$$$$$$$/  $$$$$$$/    $$$$/  $$$$$$$$/ $$/ $$$$$$$/
 
-/// \mainpage LibLetLib project documentation
-///
-/// \section LibLetLib
-///
-/// See the <a href="md__r_e_a_d_m_e.html">README</a> file in Related Pages for further information.
-///
-/// \subsection Repository
-/// <a href="https://gitlab.com/libletlib/libletlib">LibLetLib project version control.</a>
-
 /// \file libletlib.hpp
 /// \brief Implements ducktyping class var/var const for C++.
 ///  var is previous class that can hold any fundamental type,
