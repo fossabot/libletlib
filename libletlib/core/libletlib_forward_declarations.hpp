@@ -55,6 +55,8 @@ namespace libletlib
 		template<class>
 		class Root;
 
+		class Value;
+
 		template<typename VarLet>
 		class array_iterator;
 
@@ -132,6 +134,7 @@ namespace libletlib
 
 		namespace backing
 		{
+			int rank_compare(var const&, var const&) noexcept;
 			char type_id(var const&) noexcept;
 			char const* type_string(var const&) noexcept;
 			std::size_t length(var const&) noexcept;
@@ -175,6 +178,10 @@ namespace libletlib
 			         typename Type7, typename Type8, typename Type9, typename Type10>
 			inline var list(Type1, Type2, Type3, Type4, Type5, Type6, Type7, Type8, Type9, Type10) noexcept;
 #endif
+			bool is_list(var const&) noexcept;
+			bool is_object(var const&) noexcept;
+			bool is_null(var const&) noexcept;
+			bool is_empty(var const&) noexcept;
 			bool is_string(var const&) noexcept;
 			bool is_character(var const&) noexcept;
 			bool is_integral(var const&) noexcept;

@@ -146,16 +146,16 @@ namespace libletlib
 #endif
 #if (__cplusplus >= 201103L)
 					case enum_nullptr_type:
-						return "null";
+						return "nullptr_t";
 #endif
-
 				}
 			}
 
 			/// \brief Is the value an integer?
 			/// \param value to examine
 			/// \return true if is integral, otherwise false
-			LIBLETLIB_NODISCARD inline bool is_integral(var const& value) noexcept {
+			LIBLETLIB_NODISCARD inline bool is_integral(var const& value) noexcept
+			{
 				switch (value.behaviour->rank)
 				{
 					case enum_short_type:
@@ -184,7 +184,8 @@ namespace libletlib
 			/// \brief Is the value a floating point value?
 			/// \param value to examine
 			/// \return true if is a floating point value, otherwise false
-			LIBLETLIB_NODISCARD inline bool is_floating_point(var const& value) noexcept {
+			LIBLETLIB_NODISCARD inline bool is_floating_point(var const& value) noexcept
+			{
 				switch (value.behaviour->rank)
 				{
 					case enum_float_type:
@@ -201,7 +202,8 @@ namespace libletlib
 			/// \brief Is the value boolean?
 			/// \param value to examine
 			/// \return true if is boolean, otherwise false
-			LIBLETLIB_NODISCARD inline bool is_boolean(var const& value) noexcept {
+			LIBLETLIB_NODISCARD inline bool is_boolean(var const& value) noexcept
+			{
 				switch (value.behaviour->rank)
 				{
 					case enum_bool_type:
@@ -214,7 +216,8 @@ namespace libletlib
 			/// \brief Is the value a character?
 			/// \param value to examine
 			/// \return true if is a character, otherwise false
-			LIBLETLIB_NODISCARD inline bool is_character(var const& value) noexcept {
+			LIBLETLIB_NODISCARD inline bool is_character(var const& value) noexcept
+			{
 				switch (value.behaviour->rank)
 				{
 					case enum_char_type:
@@ -225,10 +228,10 @@ namespace libletlib
 						LIBLETLIB_FALLTHROUGH
 
 #ifndef LIBLETLIB_DISABLE_UCHAR
-#if (__cplusplus >= 202002L)
+	#if (__cplusplus >= 202002L)
 					case enum_char8_type:
 						LIBLETLIB_FALLTHROUGH
-#endif
+	#endif
 					case enum_char16_type:
 						LIBLETLIB_FALLTHROUGH
 					case enum_char32_type:
@@ -244,7 +247,8 @@ namespace libletlib
 			/// \brief Is the value unsigned?
 			/// \param value to examine
 			/// \return true if is unsigned, otherwise false
-			LIBLETLIB_NODISCARD inline bool is_unsigned(var const& value) noexcept {
+			LIBLETLIB_NODISCARD inline bool is_unsigned(var const& value) noexcept
+			{
 				switch (value.behaviour->rank)
 				{
 #if (CHAR_MIN == 0)
@@ -254,10 +258,10 @@ namespace libletlib
 					case enum_unsigned_char_type:
 						LIBLETLIB_FALLTHROUGH
 #ifndef LIBLETLIB_DISABLE_UCHAR
-#if (__cplusplus >= 202002L)
+	#if (__cplusplus >= 202002L)
 					case enum_char8_type:
 						LIBLETLIB_FALLTHROUGH
-#endif
+	#endif
 					case enum_char16_type:
 						LIBLETLIB_FALLTHROUGH
 					case enum_char32_type:
@@ -281,7 +285,8 @@ namespace libletlib
 			/// \brief Is the value signed?
 			/// \param value to examine
 			/// \return true if is signed, otherwise false
-			LIBLETLIB_NODISCARD inline bool is_signed(var const& value) noexcept {
+			LIBLETLIB_NODISCARD inline bool is_signed(var const& value) noexcept
+			{
 				switch (value.behaviour->rank)
 				{
 #if (CHAR_MIN == SCHAR_MIN)
@@ -312,13 +317,20 @@ namespace libletlib
 			/// \brief Is the value invokable?
 			/// \param value to examine
 			/// \return true if is invokable, otherwise false
-			LIBLETLIB_NODISCARD inline bool is_invokable(var const& value) noexcept {
+			LIBLETLIB_NODISCARD inline bool is_invokable(var const& value) noexcept
+			{
 				switch (value.behaviour->rank)
 				{
 					case enum_subroutine_type:
 						LIBLETLIB_FALLTHROUGH
 					case enum_function_type:
 						return true;
+#if (__cplusplus >= 201103L)
+					case enum_void_pointer_type:
+						if(value.objectify()->property("()") != var())
+							return true;
+						return false;
+#endif
 					default:
 						return false;
 				}
@@ -327,32 +339,155 @@ namespace libletlib
 			/// \brief Is the function curried?
 			/// \param value to examine
 			/// \return true if is curried, otherwise false
-			LIBLETLIB_NODISCARD inline bool is_curried(var const& value) noexcept {
-				if(is_invokable(value) && value.size.in_use > 0)
+			LIBLETLIB_NODISCARD inline bool is_curried(var const& value) noexcept
+			{
+				if (is_invokable(value) && value.size.in_use > 0)
 					return true;
 				return false;
+			}
+
+			/// \brief Is the value a list?
+			/// \param value to examine
+			/// \return true if is list, otherwise false
+			LIBLETLIB_NODISCARD inline bool is_list(var const& value) noexcept
+			{
+				switch (value.behaviour->rank)
+				{
+					case enum_array_type:
+						return true;
+					default:
+						return false;
+				}
+			}
+
+			/// \brief Is the value null?
+			/// \param value to examine
+			/// \return true if is null, otherwise false
+			LIBLETLIB_NODISCARD inline bool is_null(var const& value) noexcept
+			{
+				switch (value.behaviour->rank)
+				{
+					case enum_string_type:
+						if (value.value.string_type)
+							return false;
+						return true;
+					case enum_wide_string_type:
+						if (value.value.wide_string_type)
+							return false;
+						return true;
+					case enum_bit8_string_type:
+						if (value.value.bit8_string_type)
+							return false;
+						return true;
+					case enum_bit16_string_type:
+						if (value.value.bit16_string_type)
+							return false;
+						return true;
+					case enum_bit32_string_type:
+						if (value.value.bit32_string_type)
+							return false;
+						return true;
+					case enum_array_type:
+						if (value.value.array_type)
+							return false;
+						return true;
+					case enum_void_pointer_type:
+						if (value.value.void_pointer_type)
+							return false;
+						return true;
+					case enum_nullptr_type:
+						return true;
+					default:
+						return false;
+				}
+			}
+
+			/// \brief Is the value empty?
+			/// null is empty.
+			/// \param value to examine
+			/// \return true if is empty, otherwise false
+			LIBLETLIB_NODISCARD inline bool is_empty(var const& value) noexcept
+			{
+				if(is_null(value))
+					return true;
+				switch (value.behaviour->rank)
+				{
+					case enum_string_type:
+						if (value == "")
+							return true;
+						return false;
+					case enum_wide_string_type:
+						if (value == L"")
+							return true;
+						return false;
+					case enum_bit8_string_type:
+						if (value == u8"")
+							return true;
+						return false;
+					case enum_bit16_string_type:
+						if (value == u"")
+							return false;
+						return true;
+					case enum_bit32_string_type:
+						if (value == U"")
+							return false;
+						return true;
+					case enum_array_type:
+						if (value.size.in_use == 0)
+							return false;
+						return true;
+#if (__cplusplus >= 201103L)
+					case enum_void_pointer_type:
+						if (value.objectify()->inner.size.in_use == 0)
+							return true;
+						return false;
+#endif
+					default:
+						return false;
+				}
+			}
+
+			/// \brief Is the value an object?
+			/// \param value to examine
+			/// \return true if is object, otherwise false
+			LIBLETLIB_NODISCARD inline bool is_object(var const& value) noexcept
+			{
+	#if (__cplusplus >= 201103L)
+				switch (value.behaviour->rank)
+				{
+					case enum_void_pointer_type:
+						if (value.value.void_pointer_type)
+							return true;
+						return false;
+					default:
+						return false;
+				}
+	#else
+				return false;
+	#endif
 			}
 
 			/// \brief Is the value a string?
 			/// \param value to examine
 			/// \return true if is a string, otherwise false
-			LIBLETLIB_NODISCARD inline bool is_string(var const& value) noexcept {
+			LIBLETLIB_NODISCARD inline bool is_string(var const& value) noexcept
+			{
 				switch (value.behaviour->rank)
 				{
 					case enum_string_type:
 						LIBLETLIB_FALLTHROUGH
 					case enum_wide_string_type:
 						LIBLETLIB_FALLTHROUGH
-#ifndef LIBLETLIB_DISABLE_UCHAR
-#if (__cplusplus >= 202002L)
+	#ifndef LIBLETLIB_DISABLE_UCHAR
+		#if (__cplusplus >= 202002L)
 					case enum_bit8_string_type:
 						LIBLETLIB_FALLTHROUGH
-#endif
+		#endif
 					case enum_bit16_string_type:
 						LIBLETLIB_FALLTHROUGH
 					case enum_bit32_string_type:
 						return true;
-#endif
+	#endif
 					default:
 						return false;
 				}
@@ -480,10 +615,114 @@ namespace libletlib
 		}
 #else
 
+		/// \brief integral checking function.
+		/// \param args arguments to this function.
+		/// \return true if the value is integral, otherwise false.
+		LIBLETLIB_NODISCARD inline var is_integral_(var const&, var const& args) LIBLETLIB_NOEXCEPT
+		{
+			return backing::is_integral(args[0]);
+		}
+
+		/// \brief boolean checking function.
+		/// \param args arguments to this function.
+		/// \return true if the value is boolean, otherwise false.
+		LIBLETLIB_NODISCARD inline var is_boolean_(var const&, var const& args) LIBLETLIB_NOEXCEPT
+		{
+			return backing::is_boolean(args[0]);
+		}
+
+		/// \brief character checking function.
+		/// \param args arguments to this function.
+		/// \return true if the value is character, otherwise false.
+		LIBLETLIB_NODISCARD inline var is_character_(var const&, var const& args) LIBLETLIB_NOEXCEPT
+		{
+			return backing::is_character(args[0]);
+		}
+
+		/// \brief signedness checking function.
+		/// \param args arguments to this function.
+		/// \return true if the value is signed, otherwise false.
+		LIBLETLIB_NODISCARD inline var is_signed_(var const&, var const& args) LIBLETLIB_NOEXCEPT
+		{
+			return backing::is_signed(args[0]);
+		}
+
+		/// \brief unsignedness checking function.
+		/// \param args arguments to this function.
+		/// \return true if the value is unsigned, otherwise false.
+		LIBLETLIB_NODISCARD inline var is_unsigned_(var const&, var const& args) LIBLETLIB_NOEXCEPT
+		{
+			return backing::is_unsigned(args[0]);
+		}
+
+		/// \brief list checking function.
+		/// \param args arguments to this function.
+		/// \return true if the value is list, otherwise false.
+		LIBLETLIB_NODISCARD inline var is_list_(var const&, var const& args) LIBLETLIB_NOEXCEPT
+		{
+			return backing::is_list(args[0]);
+		}
+
+		/// \brief object checking function.
+		/// \param args arguments to this function.
+		/// \return true if the value is object, otherwise false.
+		LIBLETLIB_NODISCARD inline var is_object_(var const&, var const& args) LIBLETLIB_NOEXCEPT
+		{
+			return backing::is_object(args[0]);
+		}
+
+		/// \brief invokable checking function.
+		/// \param args arguments to this function.
+		/// \return true if the value is invokable, otherwise false.
+		LIBLETLIB_NODISCARD inline var is_invokable_(var const&, var const& args) LIBLETLIB_NOEXCEPT
+		{
+			return backing::is_invokable(args[0]);
+		}
+
+		/// \brief curry checking function.
+		/// \param args arguments to this function.
+		/// \return true if the value is curried, otherwise false.
+		LIBLETLIB_NODISCARD inline var is_curried_(var const&, var const& args) LIBLETLIB_NOEXCEPT
+		{
+			return backing::is_curried(args[0]);
+		}
+
+		/// \brief floating point number checking function.
+		/// \param args arguments to this function.
+		/// \return true if the value is floating point number, otherwise false.
+		LIBLETLIB_NODISCARD inline var is_floating_point_(var const&, var const& args) LIBLETLIB_NOEXCEPT
+		{
+			return backing::is_floating_point(args[0]);
+		}
+
+		/// \brief string checking function.
+		/// \param args arguments to this function.
+		/// \return true if the value is string, otherwise false.
+		LIBLETLIB_NODISCARD inline var is_string_(var const&, var const& args) LIBLETLIB_NOEXCEPT
+		{
+			return backing::is_null(args[0]);
+		}
+
+		/// \brief null checking function.
+		/// \param args arguments to this function.
+		/// \return true if the value is null, otherwise false.
+		LIBLETLIB_NODISCARD inline var is_null_(var const&, var const& args) LIBLETLIB_NOEXCEPT
+		{
+			return backing::is_null(args[0]);
+		}
+
+		/// \brief emptiness checking function.
+		/// \param args arguments to this function.
+		/// \return true if the value is empty, otherwise false.
+		LIBLETLIB_NODISCARD inline var is_empty_(var const&, var const& args) LIBLETLIB_NOEXCEPT
+		{
+			return backing::is_empty(args[0]);
+		}
+
 		/// \brief Length implementation.
 		/// \param args arguments to this function.
 		/// \return length of first argument.
-		LIBLETLIB_NODISCARD inline var length_(var const&, var const& args)
+		LIBLETLIB_NODISCARD inline var length_(var const&, var const& args) LIBLETLIB_NOEXCEPT
 		{
 			return backing::length(args[0]);
 		}
@@ -538,13 +777,25 @@ namespace libletlib
 #endif
 
 	}// namespace detail
-}// namespace libletlib
-
 #ifndef LIBLETLIB_FREESTANDING
-LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const pattern     = libletlib::detail::pattern_;
-LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const type_id     = libletlib::detail::type_id_;
-LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const length      = libletlib::detail::length_;
-LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const type_string = libletlib::detail::type_string_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const pattern           = libletlib::detail::pattern_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const type_id           = libletlib::detail::type_id_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const length            = libletlib::detail::length_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const type_string       = libletlib::detail::type_string_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_integral       = libletlib::detail::is_integral_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_floating_point = libletlib::detail::is_floating_point_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_boolean        = libletlib::detail::is_boolean_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_character      = libletlib::detail::is_character_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_signed         = libletlib::detail::is_signed_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_unsigned       = libletlib::detail::is_unsigned_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_string         = libletlib::detail::is_string_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_invokable      = libletlib::detail::is_invokable_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_curried        = libletlib::detail::is_curried_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_list           = libletlib::detail::is_list_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_object         = libletlib::detail::is_object_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_null           = libletlib::detail::is_null_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const is_empty           = libletlib::detail::is_empty_;
 #endif
+}// namespace libletlib
 
 #endif//LIBLETLIB_LIBLETLIB_MISCELLANEOUS_HPP

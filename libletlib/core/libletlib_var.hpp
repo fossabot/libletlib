@@ -39,6 +39,7 @@
 #include "libletlib_rank_enum.hpp"
 #include "libletlib_size_struct.hpp"
 #include "libletlib_value_union.hpp"
+#include "libletlib_roots.hpp"
 
 namespace libletlib
 {
@@ -54,6 +55,7 @@ namespace libletlib
 			template<std::size_t>
 			friend class matcher;
 			friend class MetaRoot;
+			friend class Value;
 
 		public:
 			friend bool boolean_as_boolean(var const&) noexcept;
@@ -2665,7 +2667,7 @@ namespace libletlib
 			friend var& property_reference(var const&, char const*) noexcept;
 			template<typename UniqueDummy, typename... Arguments>
 			friend var curry(UniqueDummy&&, var const&, Arguments const&...) noexcept;
-			friend int rank_compare(var const&, var const&) noexcept;
+			friend int backing::rank_compare(var const&, var const&) noexcept;
 			friend bool backing::is_string(var const& value) noexcept;
 			friend bool backing::is_character(var const&) noexcept;
 			friend bool backing::is_integral(var const&) noexcept;
@@ -2674,6 +2676,10 @@ namespace libletlib
 			friend bool backing::is_unsigned(var const&) noexcept;
 			friend bool backing::is_signed(var const&) noexcept;
 			friend bool backing::is_invokable(var const&) noexcept;
+			friend bool backing::is_list(var const&) noexcept;
+			friend bool backing::is_object(var const&) noexcept;
+			friend bool backing::is_null(var const&) noexcept;
+			friend bool backing::is_empty(var const&) noexcept;
 			friend bool backing::is_curried(var const&) noexcept;
 
 #ifdef LIBLETLIB_HOSTED
@@ -3943,7 +3949,7 @@ namespace libletlib
 			/// \return equality result as bool.
 			friend bool operator==(var const& _left, var const& _right) noexcept
 			{
-				return rank_compare(_left, _right) == 0;
+				return backing::rank_compare(_left, _right) == 0;
 			}
 
 			/// \brief Not equals operator.
@@ -3953,7 +3959,7 @@ namespace libletlib
 			/// \return non-equality result as bool.
 			friend bool operator!=(var const& _left, var const& _right) noexcept
 			{
-				return rank_compare(_left, _right) != 0;
+				return backing::rank_compare(_left, _right) != 0;
 			}
 
 			/// \brief Less than operator.
@@ -3963,7 +3969,7 @@ namespace libletlib
 			/// \return less than operation result as bool.
 			friend bool operator<(var const& _left, var const& _right) noexcept
 			{
-				return rank_compare(_left, _right) < 0;
+				return backing::rank_compare(_left, _right) < 0;
 			}
 
 			/// \brief Greater than operator.
@@ -3973,7 +3979,7 @@ namespace libletlib
 			/// \return greater than operation result as bool.
 			friend bool operator>(var const& _left, var const& _right) noexcept
 			{
-				return rank_compare(_left, _right) > 0;
+				return backing::rank_compare(_left, _right) > 0;
 			}
 
 			/// \brief Less than or equals operator.
@@ -3983,7 +3989,7 @@ namespace libletlib
 			/// \return less than or equals operation result as bool.
 			friend bool operator<=(var const& _left, var const& _right) noexcept
 			{
-				return rank_compare(_left, _right) <= 0;
+				return backing::rank_compare(_left, _right) <= 0;
 			}
 
 			/// \brief Greater than or equals operator.
@@ -3993,7 +3999,7 @@ namespace libletlib
 			/// \return greater than or equals operation result as bool.
 			friend bool operator>=(var const& _left, var const& _right) noexcept
 			{
-				return rank_compare(_left, _right) >= 0;
+				return backing::rank_compare(_left, _right) >= 0;
 			}
 
 			/// \brief Equals operator.
@@ -4004,7 +4010,7 @@ namespace libletlib
 			template<typename Type>
 			friend bool operator==(Type const _left, var const& _right) noexcept
 			{
-				return rank_compare(var(_left), _right) == 0;
+				return backing::rank_compare(var(_left), _right) == 0;
 			}
 
 			/// \brief Not equals operator.
@@ -4015,7 +4021,7 @@ namespace libletlib
 			template<typename Type>
 			friend bool operator!=(Type const _left, var const& _right) noexcept
 			{
-				return rank_compare(var(_left), _right) != 0;
+				return backing::rank_compare(var(_left), _right) != 0;
 			}
 
 			/// \brief Less than operator.
@@ -4026,7 +4032,7 @@ namespace libletlib
 			template<typename Type>
 			friend bool operator<(Type const _left, var const& _right) noexcept
 			{
-				return rank_compare(var(_left), _right) < 0;
+				return backing::rank_compare(var(_left), _right) < 0;
 			}
 
 			/// \brief Greater than operator.
@@ -4037,7 +4043,7 @@ namespace libletlib
 			template<typename Type>
 			friend bool operator>(Type const _left, var const& _right) noexcept
 			{
-				return rank_compare(var(_left), _right) > 0;
+				return backing::rank_compare(var(_left), _right) > 0;
 			}
 
 			/// \brief Less than or equals operator.
@@ -4048,7 +4054,7 @@ namespace libletlib
 			template<typename Type>
 			friend bool operator<=(Type const _left, var const& _right) noexcept
 			{
-				return rank_compare(var(_left), _right) <= 0;
+				return backing::rank_compare(var(_left), _right) <= 0;
 			}
 
 			/// \brief Greater than or equals operator.
@@ -4059,7 +4065,7 @@ namespace libletlib
 			template<typename Type>
 			friend bool operator>=(Type const _left, var const& _right) noexcept
 			{
-				return rank_compare(var(_left), _right) >= 0;
+				return backing::rank_compare(var(_left), _right) >= 0;
 			}
 
 			/// \brief Equals operator.
@@ -4070,7 +4076,7 @@ namespace libletlib
 			template<typename Type>
 			friend bool operator==(var const& _left, Type const& _right) noexcept
 			{
-				return rank_compare(_left, var(_right)) == 0;
+				return backing::rank_compare(_left, var(_right)) == 0;
 			}
 
 			/// \brief Not equals operator.
@@ -4081,7 +4087,7 @@ namespace libletlib
 			template<typename Type>
 			friend bool operator!=(var const& _left, Type const& _right) noexcept
 			{
-				return rank_compare(_left, var(_right)) != 0;
+				return backing::rank_compare(_left, var(_right)) != 0;
 			}
 
 			/// \brief Less than operator.
@@ -4092,7 +4098,7 @@ namespace libletlib
 			template<typename Type>
 			friend bool operator<(var const& _left, Type const& _right) noexcept
 			{
-				return rank_compare(_left, var(_right)) < 0;
+				return backing::rank_compare(_left, var(_right)) < 0;
 			}
 
 			/// \brief Greater than operator.
@@ -4103,7 +4109,7 @@ namespace libletlib
 			template<typename Type>
 			friend bool operator>(var const& _left, Type const& _right) noexcept
 			{
-				return rank_compare(_left, var(_right)) > 0;
+				return backing::rank_compare(_left, var(_right)) > 0;
 			}
 
 			/// \brief Less than or equals operator.
@@ -4114,7 +4120,7 @@ namespace libletlib
 			template<typename Type>
 			friend bool operator<=(var const& _left, Type const& _right) noexcept
 			{
-				return rank_compare(_left, var(_right)) <= 0;
+				return backing::rank_compare(_left, var(_right)) <= 0;
 			}
 
 			/// \brief Greater than or equals operator.
@@ -4125,7 +4131,7 @@ namespace libletlib
 			template<typename Type>
 			friend bool operator>=(var const& _left, Type const& _right) noexcept
 			{
-				return rank_compare(_left, var(_right)) >= 0;
+				return backing::rank_compare(_left, var(_right)) >= 0;
 			}
 
 			/// \brief Negation operator.
@@ -4619,10 +4625,11 @@ namespace libletlib
 
 			/// \brief Objectify current value (should be void pointer)
 			/// \return Current value casted to MetaRoot*.
-			LIBLETLIB_NODISCARD inline MetaRoot* objectify() const noexcept
-			{
-				return reinterpret_cast<MetaRoot*>(this->value.void_pointer_type);
-			}
+			LIBLETLIB_NODISCARD inline MetaRoot* objectify() const noexcept;
+
+			/// \brief Objectify current value (should be void pointer)
+			/// \return Current value casted to MetaRoot*.
+			LIBLETLIB_NODISCARD inline MetaRoot* objectify() noexcept;
 
 			template<typename String>
 			var& message(String) const noexcept;
@@ -4665,15 +4672,17 @@ namespace libletlib
 #endif
 		};
 
-		/// \brief Compare ranks of vars and select the highest ranking comparison function to execute.
-		/// \param _left var to compare.
-		/// \param _right var to compare.
-		/// \return Result of the highest ranking comparison function with _left and _right.
-		LIBLETLIB_NODISCARD inline int rank_compare(var const& _left, var const& _right) noexcept
-		{
-			return (_left).behaviour->rank >= (_right).behaviour->rank ?
-			       (_left).behaviour->comparison((_left), (_right)) :
-			       (_right).behaviour->comparison((_left), (_right));
+		namespace backing {
+			/// \brief Compare ranks of vars and select the highest ranking comparison function to execute.
+			/// \param _left var to compare.
+			/// \param _right var to compare.
+			/// \return Result of the highest ranking comparison function with _left and _right.
+			LIBLETLIB_NODISCARD inline int rank_compare(var const& _left, var const& _right) noexcept
+			{
+				return (_left).behaviour->rank >= (_right).behaviour->rank ?
+				       (_left).behaviour->comparison((_left), (_right)) :
+				       (_right).behaviour->comparison((_left), (_right));
+			}
 		}
 
 	}// namespace detail

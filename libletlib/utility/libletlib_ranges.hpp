@@ -50,7 +50,7 @@ namespace libletlib
 		{
 			std::ptrdiff_t low  = args[0].operator long();
 			std::ptrdiff_t high = args[1].operator long();
-			std::ptrdiff_t step = args[2].operator long();
+			std::ptrdiff_t step = backing::length(args) > 2 ? args[2].operator long() : 1l;
 
 			var array = backing::list(low);
 
@@ -64,9 +64,9 @@ namespace libletlib
 
 
 	}// namespace detail
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const range = libletlib::detail::range_;
 }// namespace libletlib
 
-LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const range = libletlib::detail::range_;
 #endif
 
 #endif//LIBLETLIB_LIBLETLIB_RANGES_HPP

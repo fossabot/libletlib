@@ -604,12 +604,32 @@ int main(void) {
 	var foo = new Foo;
 	foo.message("println")(foo.message("msg"));
 	var spicyRange = curry(range, 1, 10);
-	std::cout << spicyRange(1) << std::endl;
-	match(5, 4) with
-	    | []lambda(st < nd) ->* []subroutine(std::cout << nd << std::endl;)
-		| otherwise ->* []subroutine(std::cout << st << std::endl;);
+	std::cout << spicyRange(2) << std::endl;
+	let list0 = list(1, 2, 3);
+	let list1 = list(3, 2, 1, 4);
+
+	let xxx = match(list0, list1) with
+	    | []lambda(st != nd) ->* []lambda(st)
+		| otherwise ->* []lambda(nd);
+
+	std::cout << "Pattern: " << xxx << std::endl;
 
 	std::cout << filter([]lambda(st > 10), foldr([]lambda(st+nd), spicyRange(1))) << std::endl;
+
+	let iter = {1, 2, 3};
+	let map2 = foldl([]lambda(nd+=(st+1)), iter, list());
+	std::cout << map2 << std::endl;
+
+	let list_sum = iter + iter;
+	let list_append = iter << iter;
+	std::cout << list_sum << std::endl;
+	std::cout << list_append << std::endl;
+
+	let iterable = {1, 2, 3};
+	let zipped = zip(iterable, iterable, iterable);
+	std::cout << zipped << std::endl;
+	let unzipped = unzip(zipped);
+	std::cout << unzipped << std::endl;
 #endif
 	return EXIT_SUCCESS;
 }

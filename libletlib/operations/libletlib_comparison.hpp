@@ -218,7 +218,11 @@ namespace libletlib
 		/// \return 1 if _left greater, 0 if equal, -1 if _right greater.
 		LIBLETLIB_NODISCARD inline int float_comparison(var const& _left, var const& _right) noexcept
 		{
-			return number_compare(_left.operator float(), _right.operator float());
+			if(float_equals(_left.operator float(), _right.operator float()))
+				return 0;
+			if(_left.operator float() > _right.operator float())
+				return 1;
+			return -1;
 		}
 
 		/// \brief Comparison operator.
@@ -228,7 +232,11 @@ namespace libletlib
 		/// \return 1 if _left greater, 0 if equal, -1 if _right greater.
 		LIBLETLIB_NODISCARD inline int double_comparison(var const& _left, var const& _right) noexcept
 		{
-			return number_compare(_left.operator double(), _right.operator double());
+			if(float_equals(_left.operator double(), _right.operator double()))
+				return 0;
+			if(_left.operator double() > _right.operator double())
+				return 1;
+			return -1;
 		}
 
 		/// \brief Comparison operator.
@@ -238,7 +246,11 @@ namespace libletlib
 		/// \return 1 if _left greater, 0 if equal, -1 if _right greater.
 		LIBLETLIB_NODISCARD inline int long_double_comparison(var const& _left, var const& _right) noexcept
 		{
-			return number_compare(_left.operator long double(), _right.operator long double());
+			if(float_equals(_left.operator long double(), _right.operator long double()))
+				return 0;
+			if(_left.operator long double() > _right.operator long double())
+				return 1;
+			return -1;
 		}
 
 #ifndef LIBLETLIB_FREESTANDING

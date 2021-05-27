@@ -69,6 +69,7 @@ namespace libletlib
 			friend class var;
 
 			friend var pattern_(var const&, var const&) LIBLETLIB_NOEXCEPT;
+			friend bool backing::is_empty(var const&) noexcept;
 			friend std::ostream& operator<<(std::ostream& _out, var const& _item) noexcept;
 			friend std::wostream& operator<<(std::wostream& _out, var const& _item) noexcept;
 			friend var pointer_index(var const&, var const&) LIBLETLIB_NOEXCEPT;
@@ -129,6 +130,20 @@ namespace libletlib
 			{
 				return libletlib::detail::property_reference(this->inner, key);
 			}
+		};
+
+		class Value final : public Root<Value> {
+		public:
+			Value() {
+				inner = {{"self", "Var"},
+				         {"value", var()}};
+			}
+
+			explicit Value(var const& value) {
+				inner = {{"self", "Var"},
+				         {"value", value}};
+			}
+
 		};
 	#endif
 #endif

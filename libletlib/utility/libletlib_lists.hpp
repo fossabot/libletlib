@@ -234,7 +234,7 @@ namespace libletlib
 
 			if (foldable.behaviour->rank != enum_array_type)
 			{
-				var array = backing::list();
+				var array = foldable.behaviour->as_array(foldable);
 				if (array.size.in_use < 1)
 				{
 					return initial;
@@ -295,7 +295,7 @@ namespace libletlib
 
 			if (foldable.behaviour->rank != enum_array_type)
 			{
-				var array = backing::list();
+				var array = foldable.behaviour->as_array(foldable);
 				if (array.size.in_use < 1)
 				{
 					return initial;
@@ -578,18 +578,18 @@ namespace libletlib
 
 
 	}// namespace detail
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const zip    = libletlib::detail::zip_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const unzip  = libletlib::detail::unzip_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const foldl  = libletlib::detail::foldl_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const foldr  = libletlib::detail::foldr_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const map    = libletlib::detail::map_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const filter = libletlib::detail::filter_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const peek   = libletlib::detail::peek_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const head   = libletlib::detail::head_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const tail   = libletlib::detail::tail_;
+	LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const list   = libletlib::detail::list_;
 }// namespace libletlib
 
-LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const zip    = libletlib::detail::zip_;
-LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const unzip  = libletlib::detail::unzip_;
-LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const foldl  = libletlib::detail::foldl_;
-LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const foldr  = libletlib::detail::foldr_;
-LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const map    = libletlib::detail::map_;
-LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const filter = libletlib::detail::filter_;
-LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const peek   = libletlib::detail::peek_;
-LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const head   = libletlib::detail::head_;
-LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const tail   = libletlib::detail::tail_;
-LIBLETLIB_MAYBE_UNUSED libletlib::detail::var const list   = libletlib::detail::list_;
 #endif
 
 #endif//LIBLETLIB_LIBLETLIB_LISTS_HPP

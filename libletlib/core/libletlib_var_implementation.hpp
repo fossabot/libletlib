@@ -257,11 +257,11 @@ namespace libletlib
 	#if (__cplusplus >= 201103L)
 			else if (_item.behaviour->rank == enum_void_pointer_type)
 			{
-				MetaRoot* mr = _item.objectify();
+				MetaRoot* metaroot = _item.objectify();
 				_out << L'{' << std::endl;
-				for (std::size_t index = 0; index < mr->inner.size.in_use; ++index)
+				for (std::size_t index = 0; index < metaroot->inner.size.in_use; ++index)
 				{
-					_out << mr->inner.value.array_type[index][0] << L" => " << mr->inner.value.array_type[index][1]
+					_out << metaroot->inner.value.array_type[index][0] << L" => " << metaroot->inner.value.array_type[index][1]
 					     << std::endl;
 				}
 				_out << L'}';
@@ -284,6 +284,25 @@ namespace libletlib
 		}
 
 #if (__cplusplus >= 201103L)
+		/// \brief Objectify current value (should be void pointer)
+		/// \return Current value casted to MetaRoot*.
+		LIBLETLIB_NODISCARD inline MetaRoot* var::objectify() const noexcept
+		{
+			if(this->behaviour->rank == enum_void_pointer_type)
+				return reinterpret_cast<MetaRoot*>(this->value.void_pointer_type);
+			return nothing;
+		}
+
+		/// \brief Objectify current value (should be void pointer)
+		/// \return Current value casted to MetaRoot*.
+		LIBLETLIB_NODISCARD inline MetaRoot* var::objectify() noexcept
+		{
+			if(this->behaviour->rank == enum_void_pointer_type)
+				return reinterpret_cast<MetaRoot*>(this->value.void_pointer_type);
+			*this = new Value(*this);
+			return reinterpret_cast<MetaRoot*>(this->value.void_pointer_type);
+		}
+
 		template<typename String>
 		LIBLETLIB_NODISCARD inline var& var::message(String const string) const noexcept
 		{

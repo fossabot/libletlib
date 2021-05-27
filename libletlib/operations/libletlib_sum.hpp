@@ -489,22 +489,6 @@ namespace libletlib
 		/// \return result of operation.
 		LIBLETLIB_NODISCARD inline var array_sum(var const& _left, var const& _right) noexcept
 		{
-			/*if (_left.rank == enum_array_type && _right.rank == enum_array_type)
-			{
-				size_struct size  = size_struct(_left.size.in_use + _right.size.in_use);
-				var* pointer      = allocate<var>(size.allocated);
-				std::size_t index = 0;
-				for (; index < _left.size.in_use; ++index)
-				{
-					pointer[index] = _left.value.array_type[index];
-				}
-				for (std::size_t jindex = 0; jindex < _right.size.in_use; ++jindex, ++index)
-				{
-					pointer[index] = _right[jindex];
-				}
-				return var(pointer, size);
-			}
-			else */
 			if (_left.behaviour->rank == enum_array_type)
 			{
 				size_struct size  = size_struct(1ul + _left.size.in_use);
@@ -516,15 +500,16 @@ namespace libletlib
 				}
 				pointer[index] = _right;
 				return var(pointer, size);
+			} else {
+				size_struct size = size_struct(1ul + _right.size.in_use);
+				var* pointer     = allocate<var>(size.allocated);
+				pointer[0]       = _left;
+				for (std::size_t index = 0; index < _right.size.in_use; ++index)
+				{
+					pointer[index + 1] = _right.value.array_type[index];
+				}
+				return var(pointer, size);
 			}
-			size_struct size = size_struct(1ul + _right.size.in_use);
-			var* pointer     = allocate<var>(size.allocated);
-			pointer[0]       = _left;
-			for (std::size_t index = 0; index < _right.size.in_use; ++index)
-			{
-				pointer[index + 1] = _right.value.array_type[index];
-			}
-			return var(pointer, size);
 		}
 
 		/// \brief Sum operator.

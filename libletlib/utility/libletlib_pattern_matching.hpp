@@ -72,7 +72,7 @@ namespace libletlib
 			matcher(Arguments... _matchees) noexcept
 			{
 				matchees = backing::list(_matchees...);
-				pattern  = pattern(matchees);
+				pattern  = libletlib::detail::pattern_(var(), matchees);
 			}
 
 			matcher& operator|(match_condition const& _condition) noexcept

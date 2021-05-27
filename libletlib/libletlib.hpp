@@ -116,14 +116,15 @@
 				/// If NDEBUG is not defined, also print out the file and line where the error occurred and
 				/// the message if unavailable using the selected error handling mechanism (non-exceptions).
 				#define LIBLETLIB_ERROR(message, error_code)                                                           \
-					std::cerr << __FILE__ << ":" << __LINE__ << ": error: " << (message) << std::endl;                    \
-                    switch(error_code) {                                                                   \
-                        case static_cast<int>(LIBLETLIB_EDOM):                                                               \
-                            throw std::domain_error(message);                                                                                   \
-						case static_cast<int>(LIBLETLIB_ENOTSUP):                                                                              \
-                            throw std::runtime_error(message);                                                                                   \
-						case static_cast<int>(LIBLETLIB_ERANGE):                                                                               \
-							throw std::range_error(message);\
+					std::cerr << __FILE__ << ":" << __LINE__ << ": error: " << (message) << std::endl;                 \
+					switch (error_code)                                                                                \
+					{                                                                                                  \
+						case static_cast<int>(LIBLETLIB_EDOM):                                                         \
+							throw std::domain_error(message);                                                          \
+						case static_cast<int>(LIBLETLIB_ENOTSUP):                                                      \
+							throw std::runtime_error(message);                                                         \
+						case static_cast<int>(LIBLETLIB_ERANGE):                                                       \
+							throw std::range_error(message);                                                           \
 					}
 			#else
 				/// \def LIBLETLIB_ERROR(message, error_code)
@@ -346,12 +347,12 @@
 	#endif
 
 	#if (__cplusplus >= 201103L)
-	/// \def constexprconst
-	/// Allows constexpr const combination to be used without errors in C++98.
-	#define constexprconst constexpr const
-	/// \def nothing
-	/// Allows the nullptr type to be used without error in C++98 (macro'd to NULL in C++98).
-	#define nothing nullptr
+		/// \def constexprconst
+		/// Allows constexpr const combination to be used without errors in C++98.
+		#define constexprconst constexpr const
+		/// \def nothing
+		/// Allows the nullptr type to be used without error in C++98 (macro'd to NULL in C++98).
+		#define nothing nullptr
 	#endif
 
 	#if (__cplusplus < 201103L) || defined LIBLETLIB_FREESTANDING
@@ -596,92 +597,94 @@ namespace libletlib
 	#endif
 }// namespace libletlib
 
-#ifndef LIBLETLIB_DISABLE_MACRO
-	#ifndef LIBLETLIB_FREESTANDING
-		#if (__cplusplus >= 201103L)
-			/// \def match
-			/// Create pattern matching object.
-			#define match(...) libletlib::detail::matcher<libletlib::detail::count_arguments(__VA_ARGS__)>(__VA_ARGS__
-			/// \def with
-			/// Finalise pattern matching object.
-			#define with )
-			/// \def otherwise
-			/// Match any pattern.
-			#define otherwise '_'
-		#endif
+	#ifndef LIBLETLIB_DISABLE_MACRO
+		#ifndef LIBLETLIB_FREESTANDING
+			#if (__cplusplus >= 201103L)
+/// \def match
+				/// Create pattern matching object.
+				#define match(...) libletlib::detail::matcher<libletlib::detail::count_arguments(__VA_ARGS__)>(__VA_ARGS__
+/// \def with
+				/// Finalise pattern matching object.
+				#define with )
+/// \def otherwise
+				/// Match any pattern.
+				#define otherwise '_'
+			#endif
 
-		/// \def st
-		/// First argument of a function/subroutine.
-		#define st (length(args) > 0 ? args[0] : var())
-		/// \def type
-		/// Second argument of a function/subroutine.
-		#define nd (length(args) > 1 ? args[1] : var())
-		/// \def type
-		/// Third argument of a function/subroutine.
-		#define rd (length(args) > 2 ? args[2] : var())
-		/// \def Function
-		/// C++98 function macro.
-		#define Function(name) var name(var const& self, var const& args) LIBLETLIB_NOEXCEPT
-		/// \def Subroutine
-		/// C++98 subroutine macro.
-		#define Subroutine(name) void name(var const& self, var const& args) LIBLETLIB_NOEXCEPT
-
-		#if (__cplusplus >= 201103L)
-			/// \def subroutine
-			/// Nonreturning function.
-			#define subroutine(code)                                                                                   \
-				(LIBLETLIB_MAYBE_UNUSED let& self, LIBLETLIB_MAYBE_UNUSED let& args) LIBLETLIB_NOEXCEPT ->void                                                                         \
-				{                                                                                                      \
-					code                                                                                               \
-				}                                                                                                      \
-				++
+			/// \def st
+			/// First argument of a function/subroutine.
+			#define st (length(args) > 0 ? args[0] : var())
 			/// \def type
-			/// Returning function.
-			#define function(code)                                                                                     \
-				(LIBLETLIB_MAYBE_UNUSED let& self, LIBLETLIB_MAYBE_UNUSED let& args) LIBLETLIB_NOEXCEPT ->var                                                                          \
-				{                                                                                                      \
-					code                                                                                               \
-				}                                                                                                      \
-				++
-			/// \def lambda
-			/// Syntactic sugar for oneliner returning functions.
-			#define lambda(expression) function(return expression;)
-
-			/// \def curry
-			/// Syntactic sugar for currying functions.
-			#define curry(...)                                                                                         \
-				libletlib::detail::curry(                                                                                                 \
-				    []() {                                                                                             \
-				    },                                                                                                 \
-				    __VA_ARGS__)
-		#endif
-
-
-		#if (__cplusplus >= 201103L)
+			/// Second argument of a function/subroutine.
+			#define nd (length(args) > 1 ? args[1] : var())
 			/// \def type
-			/// Declare a catlang type and inner types within it under this.
-			#define type(Name)                                                                                         \
-				class Name final : public Root<Name>                                                                   \
-				{                                                                                                      \
-				public:                                                                                                \
-					Name()                                                                                             \
+			/// Third argument of a function/subroutine.
+			#define rd (length(args) > 2 ? args[2] : var())
+			/// \def Function
+			/// C++98 function macro.
+			#define Function(name) var name(var const& self, var const& args) LIBLETLIB_NOEXCEPT
+			/// \def Subroutine
+			/// C++98 subroutine macro.
+			#define Subroutine(name) void name(var const& self, var const& args) LIBLETLIB_NOEXCEPT
+
+			#if (__cplusplus >= 201103L)
+/// \def subroutine
+				/// Nonreturning function.
+				#define subroutine(code)                                                                               \
+					(LIBLETLIB_MAYBE_UNUSED let & self, LIBLETLIB_MAYBE_UNUSED let & args) LIBLETLIB_NOEXCEPT->void    \
 					{                                                                                                  \
-					inner = {{"name", #Name}
+						code                                                                                           \
+					}                                                                                                  \
+					++
+/// \def type
+				/// Returning function.
+				#define function(code)                                                                                 \
+					(LIBLETLIB_MAYBE_UNUSED let & self, LIBLETLIB_MAYBE_UNUSED let & args) LIBLETLIB_NOEXCEPT->var     \
+					{                                                                                                  \
+						code                                                                                           \
+					}                                                                                                  \
+					++
+/// \def lambda
+				/// Syntactic sugar for oneliner returning functions.
+				#define lambda(expression) function(return expression;)
 
-			/// \def contains
-			/// Include fields in this object.
-			#define contains(...)                                                                                      \
-		__VA_ARGS__};                                                                                                  \
-				}                                                                                                      \
-				}                                                                                                      \
-				;
+				/// \def curry
+				/// Syntactic sugar for currying functions.
+				#define curry(...)                                                                                     \
+					libletlib::detail::curry(                                                                          \
+					    []() {                                                                                         \
+					    },                                                                                             \
+					    __VA_ARGS__)
+			#endif
+
+
+			#if (__cplusplus >= 201103L)
+/// \def type
+				/// Declare a catlang type and inner types within it under this.
+				#define type(Name)                                                                                     \
+					class Name final : public Root<Name>                                                               \
+					{                                                                                                  \
+					public:                                                                                            \
+						Name()                                                                                         \
+						{                                                                                              \
+							inner = { {"name", #Name}
+
+				/// \def contains
+				/// Include fields in this object.
+				#define contains(...)                                                                                  \
+					__VA_ARGS__                                                                                        \
+					}                                                                                                  \
+					;                                                                                                  \
+					}                                                                                                  \
+					}                                                                                                  \
+					;
+			#endif
+
+			/// \def member
+			/// Creates a field in a libletlib object.
+			#define member(key) , libletlib::detail::field(#key)
 		#endif
-
-		/// \def member
-		/// Creates a field in a libletlib object.
-		#define member(key) , libletlib::detail::field(#key)
 	#endif
-#endif
 
 	#ifdef nodiscard
 		#undef nodiscard
