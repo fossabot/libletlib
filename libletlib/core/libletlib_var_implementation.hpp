@@ -303,12 +303,19 @@ namespace libletlib
 			return reinterpret_cast<MetaRoot*>(this->value.void_pointer_type);
 		}
 
+		/// \brief Send a message to an object.
+		/// \tparam String type of string to send.
+		/// \param string message to send.
+		/// \return the result of the message call.
 		template<typename String>
 		LIBLETLIB_NODISCARD inline var& var::message(String const string) const noexcept
 		{
 			return this->objectify()->property(string);
 		}
 
+		/// \brief Send a message to a object.
+		/// \param string field to contact.
+		/// \return the result of the message call.
 		template<>
 		LIBLETLIB_NODISCARD inline var& var::message<var const&>(var const& string) const noexcept {
 			char* const real_string = string.behaviour->as_string(string);

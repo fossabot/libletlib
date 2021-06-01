@@ -600,13 +600,13 @@ namespace libletlib
 	#ifndef LIBLETLIB_DISABLE_MACRO
 		#ifndef LIBLETLIB_FREESTANDING
 			#if (__cplusplus >= 201103L)
-/// \def match
+				/// \def match
 				/// Create pattern matching object.
 				#define match(...) libletlib::detail::matcher<libletlib::detail::count_arguments(__VA_ARGS__)>(__VA_ARGS__
-/// \def with
+				/// \def with
 				/// Finalise pattern matching object.
 				#define with )
-/// \def otherwise
+				/// \def otherwise
 				/// Match any pattern.
 				#define otherwise '_'
 			#endif
@@ -614,21 +614,21 @@ namespace libletlib
 			/// \def st
 			/// First argument of a function/subroutine.
 			#define st (length(args) > 0 ? args[0] : var())
-			/// \def type
+/// \def type
 			/// Second argument of a function/subroutine.
 			#define nd (length(args) > 1 ? args[1] : var())
-			/// \def type
+/// \def type
 			/// Third argument of a function/subroutine.
 			#define rd (length(args) > 2 ? args[2] : var())
-			/// \def Function
+/// \def Function
 			/// C++98 function macro.
 			#define Function(name) var name(var const& self, var const& args) LIBLETLIB_NOEXCEPT
-			/// \def Subroutine
+/// \def Subroutine
 			/// C++98 subroutine macro.
 			#define Subroutine(name) void name(var const& self, var const& args) LIBLETLIB_NOEXCEPT
 
 			#if (__cplusplus >= 201103L)
-/// \def subroutine
+				/// \def subroutine
 				/// Nonreturning function.
 				#define subroutine(code)                                                                               \
 					(LIBLETLIB_MAYBE_UNUSED let & self, LIBLETLIB_MAYBE_UNUSED let & args) LIBLETLIB_NOEXCEPT->void    \
@@ -636,7 +636,7 @@ namespace libletlib
 						code                                                                                           \
 					}                                                                                                  \
 					++
-/// \def type
+				/// \def type
 				/// Returning function.
 				#define function(code)                                                                                 \
 					(LIBLETLIB_MAYBE_UNUSED let & self, LIBLETLIB_MAYBE_UNUSED let & args) LIBLETLIB_NOEXCEPT->var     \
@@ -644,7 +644,7 @@ namespace libletlib
 						code                                                                                           \
 					}                                                                                                  \
 					++
-/// \def lambda
+				/// \def lambda
 				/// Syntactic sugar for oneliner returning functions.
 				#define lambda(expression) function(return expression;)
 
@@ -659,7 +659,7 @@ namespace libletlib
 
 
 			#if (__cplusplus >= 201103L)
-/// \def type
+				/// \def type
 				/// Declare a catlang type and inner types within it under this.
 				#define type(Name)                                                                                     \
 					class Name final : public Root<Name>                                                               \

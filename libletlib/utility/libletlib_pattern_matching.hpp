@@ -41,12 +41,16 @@ namespace libletlib
 	namespace detail
 	{
 	#if (__cplusplus >= 201103L)
+		/// \brief Facilitates matching expressions with the ->* operator.
 		class match_condition final
 		{
 		public:
 			var pattern;
 			var expression;
 
+			/// \brief Basic constructor.
+			/// \param _pattern pattern to match.
+			/// \param _expression to produce result.
 			match_condition(var const& _pattern, var const& _expression) noexcept
 			{
 				pattern    = _pattern;
@@ -54,11 +58,17 @@ namespace libletlib
 			}
 		};
 
+		/// \brief
+		/// \param _type
+		/// \param _expression
+		/// \return
 		match_condition operator->*(var const& _type, var const& _expression) noexcept
 		{
 			return match_condition(_type, _expression);
 		}
 
+		/// \brief Class to facilitate pattern matching.
+		/// \tparam Size amount of match condition variables.
 		template<std::size_t Size>
 		class matcher final
 		{
@@ -68,6 +78,9 @@ namespace libletlib
 			var pattern;
 			var result = var();
 
+			/// \brief Construct a list of the matchees and establish the pattern to match.
+			/// \tparam Arguments to this class.
+			/// \param _matchees arguments to this class.
 			template<typename... Arguments>
 			matcher(Arguments... _matchees) noexcept
 			{
@@ -75,6 +88,12 @@ namespace libletlib
 				pattern  = libletlib::detail::pattern_(var(), matchees);
 			}
 
+			/// \brief Facilitate match conditions with pattern:
+			///  match(x) with
+			///  | expression ->* expression
+			/// syntax.
+			/// \param _condition to match against.
+			/// \return the result for this case.
 			matcher& operator|(match_condition const& _condition) noexcept
 			{
 				if (!matched)
@@ -97,6 +116,8 @@ namespace libletlib
 				return *this;
 			}
 
+			/// \brief Simple conversion operator.
+			/// \return result of this pattern matching.
 			operator var() const noexcept
 			{
 				return this->result;
