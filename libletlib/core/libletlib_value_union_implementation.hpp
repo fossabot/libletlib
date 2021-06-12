@@ -40,7 +40,7 @@ namespace libletlib
 	{
 #if (__cplusplus >= 201103L)
 	#ifndef LIBLETLIB_FREESTANDING
-		/// \brief Value union constructor for arrays.
+		/// \brief Var union constructor for arrays.
 		///
 		/// \param _list from list initialization.
 		value_union::value_union(std::initializer_list<var> _list) noexcept

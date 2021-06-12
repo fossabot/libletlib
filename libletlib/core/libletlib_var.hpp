@@ -55,7 +55,7 @@ namespace libletlib
 			template<std::size_t>
 			friend class matcher;
 			friend class MetaRoot;
-			friend class Value;
+			friend class Var;
 
 		public:
 			friend bool boolean_as_boolean(var const&) noexcept;
@@ -4630,6 +4630,9 @@ namespace libletlib
 			/// \brief Objectify current value (should be void pointer)
 			/// \return Current value casted to MetaRoot*.
 			LIBLETLIB_NODISCARD inline MetaRoot* objectify() noexcept;
+
+			template<typename String>
+			var& message(String) noexcept;
 
 			template<typename String>
 			var& message(String) const noexcept;

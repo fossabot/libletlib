@@ -132,15 +132,15 @@ namespace libletlib
 			}
 		};
 
-		class Value final : public Root<Value> {
+		class Var final : public Root<Var> {
 		public:
-			Value() {
-				inner = {{"self", "Var"},
+			Var() {
+				inner = {{"name", "Var"},
 				         {"value", var()}};
 			}
 
-			explicit Value(var const& value) {
-				inner = {{"self", "Var"},
+			explicit Var(var const& value) {
+				inner = {{"name", "Var"},
 				         {"value", value}};
 			}
 

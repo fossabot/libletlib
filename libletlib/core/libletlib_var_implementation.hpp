@@ -299,9 +299,20 @@ namespace libletlib
 		{
 			if(this->behaviour->rank == enum_void_pointer_type)
 				return reinterpret_cast<MetaRoot*>(this->value.void_pointer_type);
-			*this = new Value(*this);
+			*this = new Var(*this);
 			return reinterpret_cast<MetaRoot*>(this->value.void_pointer_type);
 		}
+
+		/// \brief Send a message to an object.
+		/// \tparam String type of string to send.
+		/// \param string message to send.
+		/// \return the result of the message call.
+		template<typename String>
+		LIBLETLIB_NODISCARD inline var& var::message(String const string) noexcept
+		{
+			return this->objectify()->property(string);
+		}
+
 
 		/// \brief Send a message to an object.
 		/// \tparam String type of string to send.

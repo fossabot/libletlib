@@ -614,16 +614,16 @@ namespace libletlib
 			/// \def st
 			/// First argument of a function/subroutine.
 			#define st (length(args) > 0 ? args[0] : var())
-/// \def type
+			/// \def type
 			/// Second argument of a function/subroutine.
 			#define nd (length(args) > 1 ? args[1] : var())
-/// \def type
+			/// \def type
 			/// Third argument of a function/subroutine.
 			#define rd (length(args) > 2 ? args[2] : var())
-/// \def Function
+			/// \def Function
 			/// C++98 function macro.
 			#define Function(name) var name(var const& self, var const& args) LIBLETLIB_NOEXCEPT
-/// \def Subroutine
+			/// \def Subroutine
 			/// C++98 subroutine macro.
 			#define Subroutine(name) void name(var const& self, var const& args) LIBLETLIB_NOEXCEPT
 

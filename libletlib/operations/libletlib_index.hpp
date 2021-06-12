@@ -440,7 +440,7 @@ namespace libletlib
 
 		/// \brief Index-of operator.
 		///
-		/// \return Value at index.
+		/// \return Var at index.
 		LIBLETLIB_NODISCARD inline var subroutine_index(var const&, var const&) LIBLETLIB_NOEXCEPT
 		{
 			LIBLETLIB_ERROR("Illegal operation: accessing subroutine by index", static_cast<int>(LIBLETLIB_EDOM));
@@ -453,7 +453,7 @@ namespace libletlib
 		///
 		/// \param _value to property index of.
 		/// \param _index to retrieve.
-		/// \return Value at index..
+		/// \return Var at index.
 		LIBLETLIB_NODISCARD inline var function_index(var const& _value, var const& _index) noexcept
 		{
 			return var(_value.value.function_type)()[_index];

@@ -630,6 +630,10 @@ int main(void) {
 	std::cout << zipped << std::endl;
 	let unzipped = unzip(zipped);
 	std::cout << unzipped << std::endl;
+
+	var x = 1;
+	std::cout << x.message("value") << std::endl;
+
 #endif
 	return EXIT_SUCCESS;
 }

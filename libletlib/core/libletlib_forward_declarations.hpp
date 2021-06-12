@@ -55,7 +55,7 @@ namespace libletlib
 		template<class>
 		class Root;
 
-		class Value;
+		class Var;
 
 		template<typename VarLet>
 		class array_iterator;
