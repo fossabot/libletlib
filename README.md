@@ -1,4 +1,6 @@
 # LibLetLib
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flibletlib%2Flibletlib.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Flibletlib%2Flibletlib?ref=badge_shield)
+
 
 Static typing grinding your gears? Want to fail even faster? 
 ```auto``` not automatic enough? LibLetLib is the answer that proudly defies some C++ best
@@ -432,3 +434,7 @@ int main(void) {
     return EXIT_SUCCESS;
 }
 ```
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Flibletlib%2Flibletlib.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Flibletlib%2Flibletlib?ref=badge_large)
